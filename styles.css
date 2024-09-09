@@ -1,14 +1,15 @@
-#container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 530px;
-}
-
-.grid-item {
-    width: 30px;
-    height: 30px;
-    background-color: rgb(213, 213, 213);
-    margin: 1px;
-    
-}
-
+.container {
+    display: grid;
+    grid-template-columns: repeat(var(--divisor), 1fr);
+    grid-template-rows: repeat(var(--divisor), 1fr);
+    width: 600px;
+    height: 600px;
+    margin: 50px 0;
+    border: 2px solid #ccc;
+  }
+  
+  .cell {
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
