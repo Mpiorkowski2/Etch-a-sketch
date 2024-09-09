@@ -1,43 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Etch a Sketch</title>
-    <script src="script.js" defer></script>
-    <link rel="stylesheet" href="styles.css" />
-    
-  </head>
-  <body>
-    <h1 class="text-6xl font-bold text-center">Etch a Sketch</h1>
-    <div class="flex justify-evenly">
-      <div class="mt-40">
-        <input
-          type="text"
-          class="border-4 border-blue-400 px-16 py-1 rounded-lg mb-4"
-          placeholder="Input between 1 and 100"
-        />
-        <button
-          class="text-white font-bold bg-blue-400 px-8 py-2 rounded-lg hover:bg-white hover:text-blue-400 transition-all duration-300"
-        >
-          Create grid
-        </button>
-        <input type="color" class="block" id="colorInput" />
-        <button
-          id="randomColor"
-          class="text-white font-bold mt-4 bg-blue-400 px-8 py-2 rounded-lg hover:bg-white hover:text-blue-400 transition-all duration-300"
-        >
-          Random color
-        </button>
-        <button
-          id="clear"
-          class="block text-white font-bold mt-4 bg-blue-400 px-8 py-2 rounded-lg hover:bg-white hover:text-blue-400 transition-all duration-300"
-        >
-          Clear
-        </button>
-      </div>
-      <div class="container"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-PieceOfShit-Sketch</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <div class="content">
+        <h1>Etch-a-Sketch</h1>
+        <div class="container">
+        </div>
+        <button>Erase</button>
+        <button class="colorwheel">Change Color</button>
+        <input type="color" id="hiddenColorInput" style="display: none;">
     </div>
-  </body>
-  <script src="javascript.js" defer></script>
+    
+</body>
+<script src="javascript.js"></script> 
 </html>

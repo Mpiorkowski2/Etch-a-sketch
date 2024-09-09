@@ -1,59 +1,84 @@
-window.addEventListener("load", function () {
-    createSquares(16);
-  });
-  
-  let newGameButton = document.querySelector(".new-game-button");
-  const gameBoardWidth = 960;
-  
-  newGameButton.addEventListener("click", function () {
-    let gridWidth = prompt("How wide should the grid be?");
-    if (gridWidth === null || gridWidth < 1) {
-      return;
+const container = document.querySelector(".container");
+const eraser = document.querySelector(".eraser");
+const rainbow = document.querySelector(".rainbow");
+const reset = document.querySelector(".reset");
+const darkening = document.querySelector(".darkening");
+const colorPicker = document.querySelector(".colorPicker");
+let selectedColor = colorPicker.value;
+
+function createGrid(itemsPerSide) {
+    container.innerHTML = '';
+    const itemSize = 600 / itemsPerSide;
+    for (let i = 0; i < itemsPerSide * itemsPerSide; i++) {
+        const item = document.createElement("div");
+        item.classList.add("item");
+        item.style.width = `${itemSize}px`;
+       // item.style.height = `${itemSize}px`;
+        item.addEventListener("mouseenter", mouseEnter); 
+        container.appendChild(item);
+    };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    createGrid(16);
+});
+
+function changeGridSize() {
+    const newSize = prompt("Enter grid size (between 2 and 99)");
+    const size = parseInt(newSize, 10);
+    if ( size >= 2 && size <= 99) {
+        createGrid(size);
+    } else {
+        alert("Please enter a number between 2 and 99.");
+    };
+};
+
+colorPicker.addEventListener("input", (event) => {
+    selectedColor =  event.target.value;
+})
+
+function mouseEnter(event) {
+    event.target.style.backgroundColor = selectedColor;
+};
+
+eraser.addEventListener("click", () => {
+    const items = document.querySelectorAll(".item");
+    items.forEach(item => {
+        item.addEventListener("mouseenter", () => item.style.backgroundColor = "white");
+    });
+});
+
+rainbow.addEventListener("click", () => {
+    const items = document.querySelectorAll(".item");
+    items.forEach(item => {
+        item.addEventListener("mouseenter", () => item.style.backgroundColor = getRandomColor());
+    });
+});
+
+reset.addEventListener("click", () => {
+    const items = document.querySelectorAll(".item");
+    items.forEach(item => item.style.backgroundColor = "white");
+});
+
+darkening.addEventListener("click", () => {
+    const items = document.querySelectorAll(".item");
+    items.forEach(item => {
+        let opacity = 0;
+        item.removeEventListener("mouseenter", mouseEnter);
+        item.addEventListener("click", () => item.style.backgroundColor = selectedColor);
+        item.addEventListener("click", () => {
+            opacity = Math.min(opacity + 0.1, 1);
+            item.style.opacity = opacity;
+         });
+    });
+});
+
+function getRandomColor() {
+    const hexArray = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"];
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+        let randomColor = hexArray[(Math.floor(Math.random() * 16))];
+        color = color + randomColor;
     }
-  
-    createSquares(gridWidth);
-  });
-  
-  function createSquares(gridDimensions) {
-    if (gridDimensions > 100) {
-      alert("The maximum grid width allowed is 100.");
-      return;
-    }
-  
-    let numberOfSquares = gridDimensions ** 2;
-    let squareSize = `${gameBoardWidth / gridDimensions}px`;
-    let squareBackgroundColor = "rgb(211, 211, 211)";
-    let squareOpacity = 0.1;
-  
-    let squareContainer = document.querySelector(".square-hole");
-    squareContainer.innerHTML = "";
-  
-    for (let i = 0; i < numberOfSquares; i++) {
-      let square = document.createElement("div");
-  
-      square.setAttribute("class", "game-square");
-      square.style.width = squareSize;
-      square.style.height = squareSize;
-      square.style.backgroundColor = squareBackgroundColor;
-      square.style.opacity = squareOpacity;
-  
-      square.addEventListener("mouseover", function () {
-        let currentBackgroundColor = square.style.backgroundColor;
-        let currentOpacity = square.style.opacity;
-  
-        let red = Math.floor(Math.random() * 256);
-        let blue = Math.floor(Math.random() * 256);
-        let green = Math.floor(Math.random() * 256);
-        let newBackgroundColor = `rgb( ${red}, ${blue}, ${green})`;
-        let newOpacity = +currentOpacity + 0.1;
-  
-        currentBackgroundColor == squareBackgroundColor
-          ? (square.style.backgroundColor = newBackgroundColor)
-          : "";
-  
-        square.style.opacity = newOpacity;
-      });
-  
-      squareContainer.appendChild(square);
-    }
-  }
+    return color;
+}

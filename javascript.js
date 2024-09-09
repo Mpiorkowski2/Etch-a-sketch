@@ -1,63 +1,66 @@
-const container = document.querySelector(".container");
-const clear = document.querySelector("#clear");
+let clear = document.querySelector("button");
+let container = document.querySelector(".container"); 
 
-selectedColor = "#000";
-let useRandomColor = false;
 
-function creategrid(gridSize) {
-  document.documentElement.style.setProperty("--divisor", gridSize);
-  container.innerHTML = "";
 
-  const totalCell = gridSize ** 2;
-  for (let i = 0; i < totalCell; i++) {
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
+clear.addEventListener('click', ()=>{ 
+    resetSize()
+})
 
-    cell.addEventListener("mouseenter", () => {
-      cell.style.backgroundColor = useRandomColor
-        ? getRandomColors()
-        : selectedColor;
+
+function resetSize(){
+        container.innerHTML = '';
+
+        let number = prompt("What size would you like the grid to be? (1-100)");
+        container.style.gridTemplateRows = `repeat(${number}, 1fr)`;
+        container.style.gridTemplateColumns = `repeat(${number}, 1fr)`;
+        createGrid(number); // call the createGrid function here and pass the number they entered as the argument. 
+}
+        
+function createGrid(size){
+
+    container.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+    container.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    
+    for (let i = 0; i < size*size; i++) {
+        
+        let square = document.createElement("div");
+        square.style.backgroundColor = "white";
+        container.appendChild(square);
+
+        square.addEventListener('mouseover', ()=>{
+            square.style.backgroundColor = "black";
+        })
+
+        function clearGrid(){
+            clear.addEventListener('click', e=>{
+                square.style.backgroundColor = "white"
+           })
+        }
+        
+
+        clearGrid();    
+    }
+}
+
+let colorInput = document.querySelector("#hiddenColorInput");
+let colorButton = document.querySelector(".colorwheel");
+
+colorButton.addEventListener('click', () => {
+    colorInput.click();
+});
+
+colorInput.addEventListener('input', () => {
+    let selectedColor = colorInput.value;
+    let squares = document.querySelectorAll('.container div'); // Select all squares
+
+    squares.forEach(square => {
+        square.addEventListener('mouseover', () => {
+            square.style.backgroundColor = selectedColor;
+        });
     });
-
-    clear.addEventListener("click", () => {
-      cell.setAttribute("style", "background-color: white");
-    });
-    container.appendChild(cell);
-  }
-}
-
-function changeCellNum() {
-  const numInput = document.querySelector("input").value;
-
-  if (numInput >= 1 && numInput <= 100) {
-    creategrid(numInput);
-  } else {
-    alert("Input a number between 1 and 100.");
-  }
-}
-
-const colorInput = document.querySelector("#colorInput");
-colorInput.addEventListener("click", (event) => {
-  selectedColor = event.target.value;
-  useRandomColor = false;
 });
 
-const randomColor = document.querySelector("#randomColor");
-randomColor.addEventListener("click", () => {
-  useRandomColor = !useRandomColor;
-});
 
-function getRandomColors() {
-  const h = Math.floor(Math.random() * 360);
-  const s = Math.floor(Math.random() * 100) + "%";
-  const l = Math.floor(Math.random() * 50) + "%";
 
-  return `hsl(${h},${s},${l})`;
-}
-
-const createGridButton = document.querySelector("button");
-createGridButton.addEventListener("click", changeCellNum);
-
-document.addEventListener("DOMContentLoaded", () => {
-  creategrid(16);
-});
+createGrid(16);
